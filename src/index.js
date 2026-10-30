@@ -1,8 +1,8 @@
 import express from 'express';
-
+import productsRouter from './routes/products.routes.js';
 const app = express();
 
-const productos = [
+const items = [
     { id: 1, nombre: 'Laptop', categoria: 'electronica', precio: 1000 },
     { id: 2, nombre: 'Telefono', categoria: 'electronica', precio: 500 },
     { id: 3, nombre: 'Mesa', categoria: 'muebles', precio: 150 },
@@ -51,7 +51,7 @@ app.get('/usuarios', (req, res) => {
 
 app.get('/item/:id', (req, res) => {
     const itemId = req.params.id;
-    const item = productos.find(p => p.id === parseInt(itemId));
+    const item = items.find(p => p.id === parseInt(itemId));
     if (item) {
         res.status(200).json({message: "Item encontrado con exito",
             data: item});
@@ -66,7 +66,7 @@ app.get('/items', (req, res) => {
     const category = req.query.category;
     const price = req.query.price;
 
-    const filteredItems = productos.filter(p => {
+    const filteredItems = items.filter(p => {
         return (!category || p.categoria === category) && (!price || p.precio >= parseInt(price));
     });
     res.status(200).json({
@@ -75,6 +75,9 @@ app.get('/items', (req, res) => {
     });
 
 });
+
+// Rutas de productos 
+app.use('/api', productsRouter);
 
 app.use((req, res) => {
     res.status(404).send('404 - Ruta no encontrada');
