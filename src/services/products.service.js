@@ -1,15 +1,38 @@
-const products = [
-    { id: 1, nombre: 'Laptop', categoria: 'electronica', precio: 1000 },
-    { id: 2, nombre: 'Telefono', categoria: 'electronica', precio: 500 },
-    { id: 3, nombre: 'Mesa', categoria: 'muebles', precio: 150 },
-    { id: 4, nombre: 'Silla', categoria: 'muebles', precio: 75 },
-    { id: 5, nombre: 'Auriculares', categoria: 'electronica', precio: 100 }
-]
+import { getProducts } from "../models/products.models.js"; 
 
-export const getAllProductsService = () => {
+export const getAllProductsService = async (category, price) => {
+  const products = await getProducts();
+  if (category && price) {
+    return products.filter(product => product.categoria === category && product.precio >= parseInt(price));
+  }
+  if (category) {
+    return products.filter(product => product.categoria === category);
+  }
+  if (price) {
+    return products.filter(product => product.precio >= parseInt(price));
+  }
   return products;
 };
 
 export const getProductByIdService = async (id) => {
+  const products = await getProducts();
   return products.find(product => product.id == id);
+};
+
+export const saveProduct = async (product) => {
+  const products = await getProducts();
+  const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+  const newProduct = { id: newId, ...product };
+  products.push(newProduct);
+  return newProduct;
+};
+
+export const deleteProductService = async (id) => {
+  const products = await getProducts();
+  const index = products.findIndex(product => product.id == id);
+  if (index !== -1) {
+    products.splice(index, 1);
+    return true;
+  }
+  return false;
 };
