@@ -2,20 +2,7 @@ import { db } from '../data/data.js';
 import { collection, getDocs, getDoc, addDoc, deleteDoc, doc} from 'firebase/firestore';
 
 const productsCollection = collection(db, 'products');
-// Método para buscar un producto por su ID
-export async function getProductById(id) {
-    try{
-        const productDoc = await getDoc(doc(productsCollection, id));
-        if (productDoc.exists()) {
-            return productDoc.data();
-        } else {
-            return null;
-        }
-    } catch (error) {
-        console.error('Error getting product by ID:', error);
-        return null;
-    }
-};
+
 // Método para obtener todos los productos
 export async function getProducts() {
     try{
@@ -30,6 +17,22 @@ export async function getProducts() {
         return [];
     }
 };
+
+// Método para buscar un producto por su ID
+export async function getProductById(id) {
+    try{
+        const productDoc = await getDoc(doc(productsCollection, id));
+        if (productDoc.exists()) {
+            return productDoc.data();
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting product by ID:', error);
+        return null;
+    }
+};
+
 // Método para guardar un producto en Firestore
 export async function saveProduct(product) {
     try{
@@ -42,7 +45,9 @@ export async function saveProduct(product) {
 export async function deleteProduct(id) {
     try{
         await deleteDoc(doc(productsCollection, id));
+        return id;
     } catch (error) {
         console.error('Error deleting product:', error);
+        return null;
     }
 };

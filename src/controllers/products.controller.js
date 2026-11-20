@@ -1,4 +1,4 @@
-import { getAllProductsService, getProductByIdService, saveProduct, deleteProductService } from "../services/products.service.js";
+import { getAllProductsService, getProductByIdService, saveProductService, deleteProductService } from "../services/products.service.js";
 
 export const getAllProducts = async (req, res) => {
 
@@ -45,7 +45,7 @@ export const createProduct = async (req, res) => {
   }
   try {
     const newProduct = { nombre, categoria, precio: parseInt(precio) };
-    await saveProduct(newProduct);
+    await saveProductService(newProduct);
     res.status(201).json({ message: 'Producto creado correctamente', data: newProduct });
   } catch (error) {
     res.status(500).json({ message: 'Error al crear el producto', error: error.message });
