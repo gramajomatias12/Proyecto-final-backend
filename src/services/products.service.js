@@ -20,14 +20,9 @@ export const getProductByIdService = async (id) => {
 };
 
 export const saveProductService = async (product) => {
-  const products = await getProducts();
-  const newId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
-  const newProduct = { id: newId, ...product };
-  await saveProduct(newProduct);
-  return newProduct;
+  return await saveProduct(product);
 };
 
 export const deleteProductService = async (id) => {
-  const deletedId = await deleteProduct(id);
-  return deletedId;
+  return await deleteProduct(id);
 };

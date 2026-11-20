@@ -1,6 +1,5 @@
 import express from 'express';
 import productsRoutes from './routes/products.routes.js';
-import usersRoutes from './routes/users.routes.js';
 import cors from 'cors';
 import authRouter from './routes/auth.routes.js';
 import bodyParser from 'body-parser';
@@ -18,9 +17,6 @@ app.use(bodyParser.json());
 
 // Rutas de autenticación
 app.use('/auth', authRouter);
-
-// Rutas de usuarios
-app.use('/api', usersRoutes);
 
 // Rutas de productos 
 app.use('/api', productsRoutes);
