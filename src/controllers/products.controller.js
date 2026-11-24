@@ -6,13 +6,10 @@ export const getAllProducts = async (req, res) => {
   const price = req.query.price;
 
   try {
-    const products = await getAllProductsService()
-    const filteredProducts = products.filter(p => {
-      return (!category || p.categoria === category) && (!price || p.precio >= parseInt(price));
-    });
+    const products = await getAllProductsService(category, price);
     res.status(200).json({
       message: "Productos filtrados correctamente",
-      data: filteredProducts
+      data: products
     });
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener los productos', error: error.message });
@@ -45,8 +42,8 @@ export const createProduct = async (req, res) => {
   }
   try {
     const newProduct = { nombre, categoria, precio: parseInt(precio) };
-    await saveProductService(newProduct);
-    res.status(201).json({ message: 'Producto creado correctamente', data: newProduct });
+    const savedProduct = await saveProductService(newProduct);
+    res.status(201).json({ message: 'Producto creado correctamente', data: savedProduct });
   } catch (error) {
     res.status(500).json({ message: 'Error al crear el producto', error: error.message });
   }
